@@ -1,5 +1,26 @@
+<?php
+
+include 'connection.php';
+
+$id = $_GET['updateid'];
+
+$sql = "select *from `crudapp`.`users` where id=$id";
+$result = mysqli_query($connect, $sql);
+$row = mysqli_fetch_assoc($result);
+
+$username = $row['username'];
+$email = $row['email'];
+$password = $row['password'];
+
+
+// echo $id;
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>CRUD-APP-PHP</title>
@@ -12,11 +33,13 @@
     }
 
     .header {
-      background: purple; /* Dark Blue */
+      background: purple;
+      /* Dark Blue */
       color: white;
       text-align: center;
       padding: 15px 0;
-      border-top: 5px solid black; /* Sky Blue */
+      border-top: 5px solid black;
+      /* Sky Blue */
     }
 
     .header h2 {
@@ -30,7 +53,7 @@
       background: white;
       padding: 30px;
       border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     label {
@@ -51,7 +74,8 @@
     }
 
     .submit-btn {
-      background-color: #2196f3; /* Blue */
+      background-color: #2196f3;
+      /* Blue */
       color: white;
       border: none;
       padding: 10px 20px;
@@ -65,6 +89,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="header">
@@ -72,21 +97,22 @@
   </div>
 
   <div class="form-container">
-    <h3><U>Display</U></h3>
+    <h3><U>update</U></h3>
     <br>
-      <form action="#" method="post">
+    <form action="#" method="post">
       <label for="username">Username</label>
-      <input type="text"name="username" id="username" placeholder="enter username">
+      <input type="text" name="username" id="username" placeholder="enter username"value= "<?php echo $username?>">
 
       <label for="email">Email</label>
-      <input type="email" id="email" placeholder="enter email" name="email">
+      <input type="email" id="email" placeholder="enter email" name="email" value= "<?php echo $email?>" >
 
       <label for="password">Password</label>
-      <input type="password" id="password" name="password" placeholder="enter password">
+      <input type="password" id="password" name="password" placeholder="enter password"value= "<?php echo $password?>">
 
-      <button type="submit" name="submit"class="submit-btn">update</button>
+      <button type="submit" name="submit" class="submit-btn">update</button>
     </form>
   </div>
 
 </body>
+
 </html>

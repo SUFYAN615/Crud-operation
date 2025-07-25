@@ -1,6 +1,7 @@
 <?php
 
 include 'connection.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -113,8 +114,35 @@ include 'connection.php';
          $result = mysqli_query($connect, $sql);
 
          if($result){
-          $row = mysqli_fetch_assoc($result);
-          echo $row['username'];
+          // $row = mysqli_fetch_assoc($result);
+          // echo $row['username'];
+
+
+          while($row = mysqli_fetch_assoc($result)){
+            $id = $row['id'];
+           $username = $row['username'];
+            $email = $row['email'];
+             $password = $row['password'];
+
+             echo '
+             
+             <tr>
+          <td>'.$id.'</td>
+          <td>'.$username.'</td>
+          <td>'.$email.'</td>
+          <td>'.$password.'</td>
+          <td>
+             <a href="update.php?updateid='.$id.'" class="btn btn-update">Update</a>
+                    <a href="delete.php?id=1" class="btn btn-delete">Delete</a>
+          </td>
+        </tr>
+
+             ';
+
+
+
+
+          }
          }
 
 
@@ -122,16 +150,6 @@ include 'connection.php';
 
 
 
-        <tr>
-          <td>001</td>
-          <td>Laman</td>
-          <td>laman@gmail.com</td>
-          <td>lama123</td>
-          <td>
-            <button class="btn-update">Update</button>
-            <button class="btn-delete">Delete</button>
-          </td>
-        </tr>
       </tbody>
     </table>
   </div>
