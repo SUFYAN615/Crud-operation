@@ -1,7 +1,6 @@
 <?php
 
 include 'connection.php';
-
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +9,7 @@ include 'connection.php';
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>CRUD-APP-PHP</title>
+  <title>crudapp</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -133,7 +132,7 @@ include 'connection.php';
           <td>'.$password.'</td>
           <td>
              <a href="update.php?updateid='.$id.'" class="btn btn-update">Update</a>
-                    <a href="delete.php?id=1" class="btn btn-delete">Delete</a>
+             <a href="delete.php?deleteid='.$id.'" class="btn btn-delete">Delete</a>
           </td>
         </tr>
 

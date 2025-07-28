@@ -6,113 +6,178 @@ $id = $_GET['updateid'];
 
 $sql = "select *from `crudapp`.`users` where id=$id";
 $result = mysqli_query($connect, $sql);
-$row = mysqli_fetch_assoc($result);
 
+$row = mysqli_fetch_assoc($result);
 $username = $row['username'];
 $email = $row['email'];
 $password = $row['password'];
 
+if(isset($_POST['submit'])){
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-// echo $id;
+    $sql = "update `crudapp`.`users` set 
+    username = '$username',
+    email  = '$email',
+    password = '$password'
+   where `users`.`id` = $id";
 
+    $result = mysqli_query($connect, $sql);
+
+
+    if($result){
+
+      echo "
+      <script>
+      alert('Update has been submitted');
+      window.location.href = 'display.php'
+      </script>
+      ";
+        // header('location: display.php');
+    }else{
+        die(mysqli_connect_error($connect));
+    }
+
+    mysqli_close($connect);
+
+}
 ?>
+
 
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <title>CRUD-APP-PHP</title>
+  <title>Curd App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #eaeff2;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #2980b9, #6dd5fa);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       margin: 0;
-      padding: 0;
     }
-
-    .header {
-      background: purple;
-      /* Dark Blue */
-      color: white;
-      text-align: center;
-      padding: 15px 0;
-      border-top: 5px solid black;
-      /* Sky Blue */
-    }
-
-    .header h2 {
-      margin: 0;
-      font-size: 28px;
-    }
-
     .form-container {
-      max-width: 600px;
-      margin: 50px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      background: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      width: 350px;
     }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
     }
-
     input[type="text"],
     input[type="email"],
     input[type="password"] {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
       border-radius: 5px;
-      font-size: 14px;
+      background: #f0f0f0;
     }
-
-    .submit-btn {
-      background-color: #2196f3;
-      /* Blue */
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #3498db;
       color: white;
       border: none;
-      padding: 10px 20px;
       border-radius: 5px;
       font-size: 16px;
       cursor: pointer;
     }
-
-    .submit-btn:hover {
-      background-color: #1976d2;
+    button:hover {
+      background: #2980b9;
     }
+
+  .error {
+    border: 2px solid red;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+  }
   </style>
 </head>
-
 <body>
+   
 
-  <div class="header">
-    <h2>CRUD-OPERATION</h2>
-  </div>
 
-  <div class="form-container">
-    <h3><U>update</U></h3>
-    <br>
-    <form action="#" method="post">
-      <label for="username">Username</label>
-      <input type="text" name="username" id="username" placeholder="enter username"value= "<?php echo $username?>">
 
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="enter email" name="email" value= "<?php echo $email?>" >
+<div class="form-container">
+  <h2>Create Update</h2>
+  <form method="post" id="profileForm">
+    <label>Username</label>
+    <input type="text" name="username" placeholder="Username" value="<?php echo $username ?>">
+    <div id="usernameError" class="error-message"></div>
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" placeholder="enter password"value= "<?php echo $password?>">
+    <label>Email</label>
+    <input type="email" name="email" placeholder="Email" value="<?php echo $email ?>">
+    <div id="emailError" class="error-message"></div>
 
-      <button type="submit" name="submit" class="submit-btn">update</button>
-    </form>
-  </div>
+    <label>Password</label>
+    <input type="password" name="password" placeholder="Password" value="<?php echo $password ?>">
+    <div id="passwordError" class="error-message"></div>
 
-</body>
+    <button type="submit" name="submit">Update</button>
+  </form>
+</div>
 
+<script>
+  document.getElementById('profileForm').addEventListener('submit', function (e) {
+    let isValid = true;
+
+    const username = this.username;
+    const email = this.email;
+    const password = this.password;
+
+    // Clear previous errors
+    [username, email, password].forEach(input => input.classList.remove('error'));
+    ['usernameError', 'emailError', 'passwordError'].forEach(id => document.getElementById(id).textContent = '');
+
+    // Username validation
+    if (username.value.trim() === '') {
+      username.classList.add('error');
+      document.getElementById('usernameError').textContent = 'Username is required';
+      isValid = false;
+    }
+
+    // Email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email.value.trim() === '') {
+      email.classList.add('error');
+      document.getElementById('emailError').textContent = 'Email is required';
+      isValid = false;
+    } else if (!emailPattern.test(email.value)) {
+      email.classList.add('error');
+      document.getElementById('emailError').textContent = 'Enter a valid email';
+      isValid = false;
+    }
+
+    // Password validation
+    if (password.value.trim() === '') {
+      password.classList.add('error');
+      document.getElementById('passwordError').textContent = 'Password is required';
+      isValid = false;
+    } else if (password.value.length < 6) {
+      password.classList.add('error');
+      document.getElementById('passwordError').textContent = 'Password must be at least 6 characters';
+      isValid = false;
+    }
+
+    if (!isValid) {
+      e.preventDefault(); // Stop form submission if any field is invalid
+    }
+  });
+</script>
 </html>

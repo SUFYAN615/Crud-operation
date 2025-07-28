@@ -1,6 +1,5 @@
 <?php
 
-
 $server = 'localhost';
 $username = 'root';
 $password = '';
@@ -8,11 +7,10 @@ $password = '';
 $connect = mysqli_connect($server, $username, $password);
 
 if(!$connect){
-    echo "connection not connected".mysqli_connect_error();
+    die("connection not connected". mysqli_connect_error($connect));
 }
 else{
-    //  echo 'connection success';
-  
+    // echo 'connection success';
 }
 
 ?>
